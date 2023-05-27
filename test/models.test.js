@@ -53,3 +53,27 @@ describe("History", () => {
         expect(histories_deleted).toEqual(histories);
     });
 });
+
+describe("History", () => {
+    test("Debería devolver todo el historial", async() => {
+        await createHistoryEntry({
+            firstArg: 20,
+            secondArg: 9,
+            result: 11,
+            operationName: "SUB"
+        });
+
+        await createHistoryEntry({
+            firstArg: 56,
+            secondArg: 5,
+            result: 51,
+            operationName: "SUB"
+        });
+
+        const histories = await History.findAll();
+        expect(histories.length).toEqual(2);
+        expect(histories[0].firstArg).toEqual(20);
+        expect(histories[0].secondArg).toEqual(9);
+        expect(histories[0].result).toEqual(11);
+  });
+});

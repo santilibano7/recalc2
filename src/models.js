@@ -66,3 +66,11 @@ export async function deleteHistory (){
         {   where: {} 
         });
 }
+
+export async function getFullHistory() {
+    const histories = await History.findAll({
+        include: [Operation]
+    });
+    
+    return histories;
+}
