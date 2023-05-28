@@ -46,6 +46,19 @@ describe("API add", () => {
                 expect(res.body.result).toBeLessThan(5);
             });
     });
+
+    //Testear que haciendo una request al endpoint de suma con 0.1 y 0.2 el resultado sea 0.3.
+    test("Debería responder con un 200 ok y el resultado 0.3 si el primer parámetro es 0.1 y el segundo 0.2", async () => {
+        const app = await api.build();
+
+        return request(app)
+            .get('/api/v1/add/0.1/0.2')
+            .expect(200)
+            .expect("Content-Type", "application/json; charset=utf-8")
+            .then((res) => {
+                expect(res.body.result).toBeCloseTo(0.3, 2);
+            });
+    });
 });
 
     //En el endpoint de multiplicación, probar que si ambos parámetros tienen decimales,
