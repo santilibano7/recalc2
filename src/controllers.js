@@ -53,12 +53,13 @@ router.get("/div/:a/:b", async function(req, res) {
     const b = Number(params.b);
 
     if (isNaN(a) || isNaN(b)) {
-        res.status(400).send('Uno de los parámetros no es un número');
+        return res.status(400).json({ message: 'Uno de los parámetros no es un número' });
     } else if (b === 0) {
-        res.status(400).send('El parámetro b no puede ser cero');
+        await createHistoryEntry({ firstArg: a, secondArg: b, result: null, operationName: "DIV" });
+        return res.status(400).json({ message: 'Error: No se puede dividir por 0' });
     } else {
-        const result = core.div(a,b);
-        return res.send({result});
+        const result = core.div(a, b);
+        return res.json({ result });
     }
 });
 

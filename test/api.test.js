@@ -103,3 +103,17 @@ describe("API pow", () => {
         });
     });
 });
+
+describe("API div", () => {
+    test("Debería responder con un 400 error", async () => {
+      const app = await api.build();
+  
+      return request(app)
+        .get('/api/v1/div/1/0')
+        .expect(400)
+        .expect("Content-Type", "application/json; charset=utf-8")
+        .then((res) => {
+          expect(res.body.message).toEqual("Error: No se puede dividir por 0");
+        });
+    });
+  });
