@@ -89,4 +89,18 @@ describe("API add", () => {
                 });
         });
 });
-    
+
+// En el endpoint de potencia, probar que si uno de los parámetros no es un número, el endpoint devuelva un mensaje de error 
+// correspondiente, junto a un status 400.
+describe("API pow", () => {
+    test("Deberia responder con un 400 error", async () => {
+        const app = await api.build();
+        
+        return request(app)
+        .get('api/v1/pow/P')
+        .expect(400)
+        .then((res) => {
+            expect(res.body.message).toEqual("El parámetro no es un número.");
+        });
+    });
+});
