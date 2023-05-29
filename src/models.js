@@ -74,3 +74,19 @@ export async function getFullHistory() {
     
     return histories;
 }
+
+//Hacer un endpoint para obtener una entrada del historial por id, con el test correspondiente
+export async function buscarPorID(historyId) {
+    try {
+      const history = await History.findByPk(historyId, { include: [Operation] });
+  
+      if (!history) {
+        throw new Error('No se encontró la entrada en el historial');
+      }
+  
+      return history;
+    } catch (error) {
+      throw new Error('No se pudo recuperar la entrada del historial');
+    }
+  }
+  

@@ -1,7 +1,8 @@
 import express from 'express';
 import core from './core.js';
 
-import { createHistoryEntry, History, deleteHistory, getFullHistory } from './models.js'
+import { createHistoryEntry, History, deleteHistory, getFullHistory} from './models.js'
+import { buscarPorID } from './models.js'
 
 const router = express.Router();
 
@@ -84,6 +85,19 @@ router.get("/history", async function (req, res) {
 router.get("/history", async function (req, res) {
     const history = await getFullHistory();
     return res.send({history});
+});
+
+//Hacer un endpoint para obtener una entrada del historial por id, con el test correspondiente
+router.get("/history/:id", async function (req, res) {
+  const historyId = req.params.id;
+
+  try {
+    const history = await buscarPorID(historyId);
+
+    return res.send({ history });
+  } catch (error) {
+    return res.status(404).send({ error: error.message });
+  }
 });
 
 export default router;
