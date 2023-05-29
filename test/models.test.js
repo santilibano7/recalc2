@@ -2,7 +2,8 @@ const { seed } = require('../src/seed.js')
 const {
     createHistoryEntry,
     History,
-    Operation
+    Operation,
+    buscarPorID
 } = require('../src/models.js')
 
 beforeEach(async () => {
@@ -75,5 +76,34 @@ describe("History", () => {
         expect(histories[0].firstArg).toEqual(20);
         expect(histories[0].secondArg).toEqual(9);
         expect(histories[0].result).toEqual(11);
+
   });
+});
+
+//Hacer un endpoint para obtener una entrada del historial por id, con el test correspondiente
+describe("History", () => {
+    test("Debería devolver correctamente una entrada del historial buscandola por ID", async() => {
+        await createHistoryEntry({
+            firstArg: 20,
+            secondArg: 9,
+            result: 11,
+            operationName: "SUB"
+            });
+            
+        await createHistoryEntry({
+            firstArg: 56,
+            secondArg: 5,
+            result: 51,
+            operationName: "SUB"
+            });
+        
+        //Lo que se pretende en el test es que devuelva la segunda entrada, no la primera
+        const histories = await History.findAll();
+        const historyId = histories[1].id;
+        const entrada = await buscarPorID(historyId);
+        expect(entrada.id).toEqual(historyId);
+        expect(entrada.firstArg).toEqual(56);
+        expect(entrada.secondArg).toEqual(5);
+        expect(entrada.result).toEqual(51);  
+    });
 });
