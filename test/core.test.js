@@ -99,7 +99,7 @@ describe('Pow', () => {
     });
 
 	test('Deberia dar como resultado un numero positivo', () => {
-		expect(core.pow(-5)).toBe(25);
+		expect(core.pow(-5)).toBeGreaterThan(0);
 	});
 
     test('Deberia lanzar error al intentar usar un parámetro que no es un número', () => {

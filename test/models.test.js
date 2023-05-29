@@ -15,7 +15,8 @@ describe("History", () => {
             firstArg: 2,
             secondArg: 2,
             result: 0,
-            operationName: "SUB"
+            operationName: "SUB",
+            error:""
         })
 
         const histories = await History.findAll({
@@ -28,5 +29,51 @@ describe("History", () => {
         expect(histories[0].secondArg).toEqual(2)
         expect(histories[0].result).toEqual(0)
         expect(histories[0].Operation.name).toEqual("SUB")
+        //. Hacer un test que compruebe que el nuevo atributo efectivamente se guarde en la base de datos.
+        expect(histories[0].error).toEqual("")
     })
 })
+
+describe("History", () => {
+    test("Debería devolver todo el historial", async() => {
+        await createHistoryEntry({
+            firstArg: 10,
+            secondArg: 5,
+            result: 5,
+            operationName: "SUB"
+        });
+        await createHistoryEntry({
+            firstArg: 4,
+            secondArg: 2,
+            result: 2,
+            operationName: "SUB"
+        });
+        const histories = await History.count();
+        const histories_deleted = await History.destroy({ where: {}});
+        expect(histories_deleted).toEqual(histories);
+    });
+});
+
+describe("History", () => {
+    test("Debería devolver todo el historial", async() => {
+        await createHistoryEntry({
+            firstArg: 20,
+            secondArg: 9,
+            result: 11,
+            operationName: "SUB"
+        });
+
+        await createHistoryEntry({
+            firstArg: 56,
+            secondArg: 5,
+            result: 51,
+            operationName: "SUB"
+        });
+
+        const histories = await History.findAll();
+        expect(histories.length).toEqual(2);
+        expect(histories[0].firstArg).toEqual(20);
+        expect(histories[0].secondArg).toEqual(9);
+        expect(histories[0].result).toEqual(11);
+  });
+});

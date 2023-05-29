@@ -1,7 +1,7 @@
 import express from 'express';
 import core from './core.js';
 
-import { createHistoryEntry } from './models.js'
+import { createHistoryEntry, History, deleteHistory, getFullHistory } from './models.js'
 
 const router = express.Router();
 
@@ -73,6 +73,16 @@ router.get("/pow/:a", async function (req, res) {
         await createHistoryEntry({ firstArg: a, secondArg: null, result, operationName: "POW"});
         return res.send({ result });
     }
+});
+
+router.get("/history", async function (req, res) {
+    await deleteHistory();
+    return res.send({ message: "history is deleted"});
+});
+
+router.get("/history", async function (req, res) {
+    const history = await getFullHistory();
+    return res.send({history});
 });
 
 export default router;
