@@ -99,6 +99,7 @@ describe("API pow", () => {
         return request(app)
         .get('api/v1/pow/P')
         .expect(400)
+        .expect("Content-Type", "application/json; charset=utf-8")
         .then((res) => {
             expect(res.body.message).toEqual("El parámetro no es un número.");
         });
