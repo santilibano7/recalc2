@@ -77,7 +77,7 @@ router.get("/pow/:a", async function (req, res) {
     }
 });
 
-router.get("/history", async function (req, res) {
+router.get("/history/deleted", async function (req, res) {
     await deleteHistory();
     return res.send({ message: "history is deleted"});
 });
