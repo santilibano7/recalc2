@@ -110,3 +110,17 @@ describe("History", () => {
         expect(entrada.result).toEqual(51);  
     });
 });
+
+describe("History", () => {
+    test("Debería comprobar que el atributo error se guarde en la BDD", async() => {
+        await createHistoryEntry({
+            firstArg: 20,
+            secondArg: 0,
+            operationName: "DIV",
+            error: "Error: No se puede dividir por 0"
+        });
+
+        const histories = await History.findAll();
+        expect(histories[0].error).toEqual("Error: No se puede dividir por 0");
+    });
+})
