@@ -68,11 +68,7 @@ export async function deleteHistory (){
 }
 
 export async function getFullHistory() {
-    const histories = await History.findAll({
-        include: [Operation]
-    });
-    
-    return histories;
+    return History.findAll();
 }
 
 //Hacer un endpoint para obtener una entrada del historial por id, con el test correspondiente
