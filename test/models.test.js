@@ -3,7 +3,9 @@ const {
     createHistoryEntry,
     History,
     Operation,
-    buscarPorID
+    buscarPorID,
+    deleteHistory,
+    getFullHistory
 } = require('../src/models.js')
 
 beforeEach(async () => {
@@ -36,7 +38,7 @@ describe("History", () => {
 })
 
 describe("History", () => {
-    test("Debería devolver todo el historial", async() => {
+    test("Debería devolver un mensaje de historial borrado", async() => {
         await createHistoryEntry({
             firstArg: 10,
             secondArg: 5,
@@ -49,9 +51,10 @@ describe("History", () => {
             result: 2,
             operationName: "SUB"
         });
-        const histories = await History.count();
-        const histories_deleted = await History.destroy({ where: {}});
-        expect(histories_deleted).toEqual(histories);
+        const histories_deleted = await deleteHistory();
+        const histories = await getFullHistory();
+        expect(histories_deleted).toEqual(2);
+        expect(histories.length).toEqual(0);
     });
 });
 
@@ -71,7 +74,7 @@ describe("History", () => {
             operationName: "SUB"
         });
 
-        const histories = await History.findAll();
+        const histories = await getFullHistory();
         expect(histories.length).toEqual(2);
         expect(histories[0].firstArg).toEqual(20);
         expect(histories[0].secondArg).toEqual(9);
@@ -98,7 +101,7 @@ describe("History", () => {
             });
         
         //Lo que se pretende en el test es que devuelva la segunda entrada, no la primera
-        const histories = await History.findAll();
+        const histories = await getFullHistory();
         const historyId = histories[1].id;
         const entrada = await buscarPorID(historyId);
         expect(entrada.id).toEqual(historyId);
