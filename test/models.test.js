@@ -124,3 +124,23 @@ describe("History", () => {
         expect(histories[0].error).toEqual("Error: No se puede dividir por 0");
     });
 })
+
+describe("History", () => {
+    test("El segundo parametro deberia guardarse en la base de datos", async () => {
+        await createHistoryEntry({
+            firstArg: 8,
+            secondArg: 4,
+            result: 4,
+            operationName: "SUB",
+            error:""
+        })
+
+        const histories = await History.findAll({
+            include: [Operation]
+        })
+        // Verificar que se haya guardado al menos un historico
+        expect(histories.length).toEqual(1)
+        // Verificar que el segundo parámetro se haya guardado correctamente
+        expect(histories[0].result).toEqual(4)
+    })
+});
