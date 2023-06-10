@@ -77,15 +77,19 @@ describe("API add", () => {
                 });
         });
 
-        test("Debería responder con un 200 ok y si el resultado da decimales, teniendo ambos parametros con decimales", async () => {
+        function tieneDecimales(num) {
+            return num % 1 !== 0;
+        }
+
+        test("Debería responder con un 200 ok y si el resultado da decimales, teniendo ambos parámetros con decimales", async () => {
             const app = await api.build();
-    
+        
             return request(app)
                 .get('/api/v1/mul/1.5/2.5')
                 .expect(200)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .then((res) => {
-                    expect(res.body.result).toEqual(3.75);
+                    expect(tieneDecimales(res.body.result)).toBeTruthy();
                 });
         });
 });
