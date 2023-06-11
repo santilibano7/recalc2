@@ -5,7 +5,7 @@ const inTest = process.env.NODE_ENV === 'test';
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     logging: !inTest,
-    storage: inTest ? ':memory:' : './db.sqlite3'
+    storage: inTest ? './db.sqlite3' : './db.sqlite3'
 })
 
 export const History = sequelize.define('History', {
@@ -47,7 +47,7 @@ export async function createHistoryEntry({ firstArg, secondArg, operationName, r
 
     return History.create({
         firstArg,
-        secondArg, //Arreglar el bug que hace que no se guarde el segundo parametro en la tabla History y hacer el test correspondiente
+        secondArg,
         result,
         OperationId: operation.id,
         error
