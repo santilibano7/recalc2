@@ -25,6 +25,10 @@ $buttons.addEventListener('click', async (e) => {
             result = await calculateDiv(firstArg, secondArg)
         }
 
+        if (operation === "+") {
+            result = await calculate(firstArg, secondArg)
+        }
+
         reset = true;
         return renderDisplay(result);
     }
@@ -51,6 +55,13 @@ async function calculateSub(firstArg, secondArg) {
 
 async function calculateDiv(firstArg, secondArg) {
     const resp = await fetch(`/api/v1/div/${firstArg}/${secondArg}`)
+    const { result } = await resp.json();
+
+    return result;
+}
+
+async function calculate(firstArg, secondArg) {
+    const resp = await fetch(`/api/v1/${operation}/${firstArg}/${secondArg}`)
     const { result } = await resp.json();
 
     return result;

@@ -81,4 +81,37 @@ test.describe('test', () => {
     expect(historyEntry.secondArg).toEqual(2)
     expect(historyEntry.result).toEqual(30)
   });
+
+  test('Deberia poder realizar una suma', async ({ page }) => {
+    await page.goto('./');
+
+    await page.getByRole('button', { name: '6' }).click()
+    await page.getByRole('button', { name: '0' }).click()
+    await page.getByRole('button', { name: '+' }).click()
+    await page.getByRole('button', { name: '2' }).click()
+
+    const [response] = await Promise.all([
+      page.waitForResponse((r) => r.url().includes('/api/v1/add/')),
+      page.getByRole('button', { name: '=' }).click()
+    ]);
+
+    const { result } = await response.json();
+    expect(result).toBe(62);
+
+    await expect(page.getByTestId('display')).toHaveValue(/62/)
+
+    const operation = await Operation.findOne({
+      where: {
+        name: "ADD"
+      }
+    });
+
+    const historyEntry = await History.findOne({
+      where: { OperationId: operation.id }
+    })
+
+    expect(historyEntry.firstArg).toEqual(60)
+    expect(historyEntry.secondArg).toEqual(2)
+    expect(historyEntry.result).toEqual(62)
+  });
 })
